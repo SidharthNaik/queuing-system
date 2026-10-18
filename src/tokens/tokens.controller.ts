@@ -17,6 +17,7 @@ export class TokensController {
   @Post()
   @ApiOperation({ summary: 'Create a token for a customer' })
   @ApiCreatedResponse({ type: CreatedTokenResponseDto })
+  /** Issues a token to a customer and reports how many are waiting ahead. */
   create(): CreatedTokenResponseDto {
     const { token, waitingAhead } = this.tokensService.create();
     return { ...TokenResponseDto.from(token), waitingAhead };
@@ -27,6 +28,7 @@ export class TokensController {
   @ApiOperation({ summary: 'Call the next waiting token for service (staff)' })
   @ApiOkResponse({ type: TokenResponseDto })
   @ApiNotFoundResponse({ description: 'No tokens are waiting' })
+  /** Hands staff the next waiting token; responds 404 when the queue is empty. */
   next(): TokenResponseDto {
     const token = this.tokensService.callNext();
     if (!token) {

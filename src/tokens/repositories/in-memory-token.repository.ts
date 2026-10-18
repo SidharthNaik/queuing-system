@@ -14,6 +14,7 @@ export class InMemoryTokenRepository extends TokenRepository {
   private lastNumber = 0;
   private queue: Token[] = [];
 
+  /** Assigns the next number for `day` and enqueues the token. */
   create(day: string, createdAt: Date): Token {
     this.rollOver(day);
     const token: Token = {
@@ -26,16 +27,19 @@ export class InMemoryTokenRepository extends TokenRepository {
     return token;
   }
 
+  /** Dequeues the oldest token, or returns null if the queue is empty. */
   takeNext(day: string): Token | null {
     this.rollOver(day);
     return this.queue.shift() ?? null;
   }
 
+  /** Returns how many tokens are waiting for `day`. */
   countWaiting(day: string): number {
     this.rollOver(day);
     return this.queue.length;
   }
 
+  /** Resets the counter and clears the queue when `day` differs from the current day. */
   private rollOver(day: string): void {
     if (this.currentDay === day) return;
     this.currentDay = day;

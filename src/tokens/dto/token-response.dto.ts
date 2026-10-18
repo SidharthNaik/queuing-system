@@ -14,6 +14,7 @@ export class TokenResponseDto {
   @ApiProperty({ type: String, format: 'date-time' })
   createdAt: string;
 
+  /** Maps a stored token to its API representation. */
   static from(token: Token): TokenResponseDto {
     return {
       id: token.id,
